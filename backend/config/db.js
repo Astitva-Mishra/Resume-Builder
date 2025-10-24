@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+import "dotenv/config";
+
 export const connectDB = async () => {
-    await mongoose.connect('mongodb+srv://mailastitva15_db_user:resumebuilder@cluster0.8okpw4b.mongodb.net/RESUME')
+    await mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log("MongoDB connected successfully")
     })
@@ -9,3 +11,20 @@ export const connectDB = async () => {
         throw error
     });
 }
+
+
+
+// import mongoose from "mongoose";
+// import dotenv from "dotenv";
+
+// dotenv.config(); // load .env
+
+// export const connectDB = async () => {
+//   try {
+//     await mongoose.connect(process.env.MONGO_URI);
+//     console.log("MongoDB connected successfully");
+//   } catch (error) {
+//     console.error("MongoDB connection error:", error);
+//     throw error;
+//   }
+// };
