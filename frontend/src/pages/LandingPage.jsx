@@ -1,14 +1,24 @@
 import { useContext, useState } from "react";
-import { LayoutTemplate, Menu, X } from "lucide-react";
+import { ArrowRight, LayoutTemplate, Menu, X } from "lucide-react";
 import { landingPageStyles } from "../assets/dummystyle";
 import { UserContext } from "../context/UserContext";
 import { ProfileInfoCard } from "../components/Cards";
 
 const LandingPage = () => {
   const { user } = useContext(UserContext);
-  const [openAuthModal, setOpenAuthModal] = useState(false);
+  //const navigate = useNavigate();
 
+  const [openAuthModal, setOpenAuthModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState("login");
+
+  const handleCTA = () => {
+    if (!user) {
+      setOpenAuthModal(true);
+    } else {
+      navigate("/dashboard");
+    }
+  };
 
   return (
     <div className={landingPageStyles.container}>
@@ -106,7 +116,65 @@ const LandingPage = () => {
                 </span>
                 <span className={landingPageStyles.headingText}>Resume</span>
               </h1>
+              <p className={landingPageStyles.description}>
+                Create stunning resumes effortlessly with expertly designed
+                templates , ATS-friendly, recruiters-approved and tailored to
+                your goals
+              </p>
+              <div className={landingPageStyles.ctaButtons}>
+                <button
+                  className={landingPageStyles.primaryButton}
+                  onClick={handleCTA}
+                >
+                  <div className={landingPageStyles.primaryButtonOverlay}></div>
+                  <span className={landingPageStyles.primaryButtonContent}>
+                    Start Building
+                    <ArrowRight
+                      className={landingPageStyles.primaryButtonIcon}
+                      size={18}
+                    />
+                  </span>
+                </button>
+
+                <button
+                  className={landingPageStyles.secondaryButton}
+                  onClick={handleCTA}
+                >
+                  View Templates
+                </button>
+              </div>
+
+              {/* STAT GRID */}
+              <div className={landingPageStyles.statsContainer}>
+                {[
+                  {
+                    value: "50K+",
+                    label: "Resumes Created",
+                    gradient: "from-violet-600 to-fuchsia-600",
+                  },
+                  {
+                    value: "4.9★",
+                    label: "User Rating",
+                    gradient: "from-orange-500 to-red-500",
+                  },
+                  {
+                    value: "5 Min",
+                    label: "Build Time",
+                    gradient: "from-emerald-500 to-teal-500",
+                  }
+                ].map((stat, idx) => (
+                  <div className={landingPageStyles.statItem} key={idx}>
+                    <div className={`${landingPageStyles.statNumber} ${stat.gradient}`}>
+                      {stat.value}
+                      </div>
+                      <div className={landingPageStyles.statLabel}>{stat.label}</div>
+                    </div>
+                ))} 
+              </div>
             </div>
+
+            {/* Right Content - Hero Image */}
+            {/* Time Stamp = 2:02:28 */}
           </div>
         </section>
       </main>
@@ -115,5 +183,3 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-
-//1:56:59 Time stamp
