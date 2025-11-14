@@ -12,7 +12,10 @@ const UserProvider = ({ children }) => {
     if (user) return;
 
     const accessToken = localStorage.getItem("token");
-    if (accessToken) {
+    // If there is no token, skip fetching user and stop loading.
+    // If there is a token, attempt to fetch the profile so `user` is populated
+    // and components such as `ProfileInfoCard` can render.
+    if (!accessToken) {
       setLoading(false);
       return;
     }
