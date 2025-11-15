@@ -9,6 +9,8 @@ import { ResumeSummaryCard } from "../components/Cards";
 
 import toast from "react-hot-toast";
 import moment from "moment/moment";
+import Modal from "../components/Modal";
+import CreateResumeForm from "../components/CreateResumeForm";
 
 
 const Dashboard = () => {
@@ -227,6 +229,24 @@ setShowDeleteConfirm(true);
       </div>
 
       {/* Create Modal */}
+      <Modal isOpen={openCreateModal} onClose={() => setOpenCreateModal(false)}
+        hideHeader maxWidth="max-w-2xl">
+          <div className="p-6">
+            <div className={styles.modalHeader}>
+              <h3 className={styles.modalTitle}>Create New Resume</h3>
+
+              <button onClick={() => setOpenCreateModal(false)} className={styles.modalCloseButton}>
+                X
+              </button>
+            </div>
+            <CreateResumeForm onSuccess={() => {
+              setOpenCreateModal(false);
+              fetchAllResumes();
+            }} />
+          </div>
+      </Modal>
+
+      {/* Delete Modal */}
       
     </DashboardLayout>
   )
