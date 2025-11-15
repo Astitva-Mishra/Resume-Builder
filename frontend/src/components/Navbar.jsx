@@ -24,6 +24,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
-//2:43:26 Time stamp

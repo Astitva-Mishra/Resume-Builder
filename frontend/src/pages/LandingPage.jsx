@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   Download,
@@ -17,7 +18,7 @@ import Modal from "../components/Modal";
 
 const LandingPage = () => {
   const { user } = useContext(UserContext);
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
