@@ -1,10 +1,11 @@
 import React from "react";
-import { resumeTemplates } from "./../utils/data";
+import { DUMMY_RESUME_DATA, resumeTemplates } from "./../utils/data";
 import { useRef } from "react";
 import { useState } from "react";
 import Tabs from "./Tabs";
 import { Check } from "lucide-react";
 import { TemplateCard } from "./Cards";
+import RenderResume from './RenderResume';
 
 const TAB_DATA = [{ label: "Templates" }];
 
@@ -75,7 +76,12 @@ const ThemeSelector = ({
         </div>
 
         {/*Right Area - Resume Preview*/}
-        
+        <div className="lg-col-span-3 bg-white rounded-2xl border border-gray-100 p-4 sm:p-6" ref={resumeRef}>
+            <RenderResume templateId={selectedTemplate?.theme || ""}
+            resumeData={resumeData || DUMMY_RESUME_DATA}
+            containerWidth={basewidth}
+            />
+        </div>
       </div>
     </div>
   );
