@@ -1,6 +1,10 @@
 import React from "react";
 import DashboardLayout from "./DashboardLayout";
-import { buttonStyles, containerStyles } from "../assets/dummystyle";
+import {
+  buttonStyles,
+  containerStyles,
+  statusStyles,
+} from "../assets/dummystyle";
 import { TitleInput } from "./Inputs";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRef } from "react";
@@ -8,13 +12,30 @@ import { useState } from "react";
 import { useCallback } from "react";
 // import { useResizeObserver } from "@react-hook/resize-observer";
 import { useEffect } from "react";
-import { Download, Palette, Trash2 } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowLeft,
+  Download,
+  Palette,
+  Trash2,
+} from "lucide-react";
 import { API_PATHS } from "../utils/apiPaths";
 import toast from "react-hot-toast";
 import axiosInstance from "../utils/axiosInstance";
 import { fixTailwindColors } from "../utils/colors";
 import html2pdf from "html2pdf.js";
 import html2canvas from "html2canvas";
+import StepProgress from "./StepProgress";
+import {
+  ProfileInfoForm,
+  ContactInfoForm,
+  WorkExperienceForm,
+  EducationDetailsForm,
+  SkillsInfoForm,
+  ProjectDetailForm,
+  CertificationInfoForm,
+  AdditionalInfoForm,
+} from "./Forms";
 
 //Resize observer hook
 const useResizeObserver = () => {
@@ -641,6 +662,7 @@ const EditResume = () => {
         background-color: #fff !important;
         border-color: #000 !important;
       }
+
     `;
     document.head.appendChild(override);
 
@@ -758,6 +780,31 @@ const EditResume = () => {
         </div>
 
         {/*Step Progress Bar*/}
+        <div className={containerStyles.grid}>
+          <div className={containerStyles.formContainer}>
+            <StepProgress progress={progress} />
+            {renderForm()}
+            <div className="p-4 sm:p-6">
+              {errorMsg && (
+                <div className={statusStyles.error}>
+                  <AlertCircle size={16} />
+                  {errorMsg}
+                </div>
+              )}
+
+              <div className=" flex flex-wrap items-center justify-end gap-3">
+                <button
+                  className={buttonStyles.back}
+                  onClick={goBack}
+                  disabled={isLoading}
+                >
+                  <ArrowLeft size={16} />
+                  Back
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </DashboardLayout>
   );
