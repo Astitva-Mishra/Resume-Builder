@@ -5,6 +5,8 @@ import Dashboard from "./pages/Dashboard";
 import Resume from "./pages/Resume";
 import { User } from "lucide-react";
 import UserProvider from "./context/UserContext";
+import EditResume from "./components/EditResume";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
@@ -12,8 +14,17 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/resume/:id" element={<Resume />} />
+        <Route path="/resume/:resumeId" element={<EditResume />} />
       </Routes>
+
+      <Toaster toastOptions={{
+        className: '',
+        style:{
+          fontSize: '13px',
+        }
+      }}>
+
+      </Toaster>
     </UserProvider>
   );
 };
