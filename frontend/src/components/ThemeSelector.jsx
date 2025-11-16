@@ -6,6 +6,7 @@ import Tabs from "./Tabs";
 import { Check } from "lucide-react";
 import { TemplateCard } from "./Cards";
 import RenderResume from './RenderResume';
+import { useEffect } from "react";
 
 const TAB_DATA = [{ label: "Templates" }];
 
@@ -36,7 +37,15 @@ const ThemeSelector = ({
     if (resumeRef.current) {
       setBasewidth(resumeRef.current.offsetWidth);
     }
-  };
+  }
+
+  useEffect(() => {
+    updateBaseWidth()
+    window.addEventListener("resize", updateBaseWidth)
+    return () =>{
+      window.removeEventListener("resize", updateBaseWidth)
+    }
+  }, [])
 
   return (
     <div className=" max-w-7xl mx-auto px-4 ">
@@ -45,7 +54,7 @@ const ThemeSelector = ({
         <Tabs
           tabs={TAB_DATA}
           activeTab={tabValue}
-          setActiveTab={setActiveTab}
+          setActiveTab={setTabValue}
         />
 
         <button
