@@ -5,7 +5,7 @@ import { useState } from "react";
 import Tabs from "./Tabs";
 import { Check } from "lucide-react";
 import { TemplateCard } from "./Cards";
-import RenderResume from './RenderResume';
+import RenderResume from "./RenderResume";
 import { useEffect } from "react";
 
 const TAB_DATA = [{ label: "Templates" }];
@@ -29,7 +29,10 @@ const ThemeSelector = ({
   const [tabValue, setTabValue] = useState("Templates");
 
   const handleThemeSelection = () => {
-    setSelectedTemplate(selectedTemplate.theme);
+    // notify parent about the selected theme id
+    if (typeof setSelectedTheme === "function") {
+      setSelectedTheme(selectedTemplate.theme);
+    }
     onClose();
   };
 
@@ -37,25 +40,21 @@ const ThemeSelector = ({
     if (resumeRef.current) {
       setBasewidth(resumeRef.current.offsetWidth);
     }
-  }
+  };
 
   useEffect(() => {
-    updateBaseWidth()
-    window.addEventListener("resize", updateBaseWidth)
-    return () =>{
-      window.removeEventListener("resize", updateBaseWidth)
-    }
-  }, [])
+    updateBaseWidth();
+    window.addEventListener("resize", updateBaseWidth);
+    return () => {
+      window.removeEventListener("resize", updateBaseWidth);
+    };
+  }, []);
 
   return (
     <div className=" max-w-7xl mx-auto px-4 ">
       {/* Header */}
-      <div className=" flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 p-4 sm:p=6 bg-gradient-to-r from-white to-violet-50 rounded-2xl border border-violet-100">
-        <Tabs
-          tabs={TAB_DATA}
-          activeTab={tabValue}
-          setActiveTab={setTabValue}
-        />
+      <div className=" flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 p-4 sm:p-6 bg-gradient-to-r from-white to-violet-50 rounded-2xl border border-violet-100">
+        <Tabs tabs={TAB_DATA} activeTab={tabValue} setActiveTab={setTabValue} />
 
         <button
           className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r transition-all shadow-lg hover:shadow-xl"
@@ -85,11 +84,15 @@ const ThemeSelector = ({
         </div>
 
         {/*Right Area - Resume Preview*/}
-        <div className="lg-col-span-3 bg-white rounded-2xl border border-gray-100 p-4 sm:p-6" ref={resumeRef}>
-            <RenderResume templateId={selectedTemplate?.theme || ""}
+        <div
+          className="lg:col-span-3 bg-white rounded-2xl border border-gray-100 p-4 sm:p-6"
+          ref={resumeRef}
+        >
+          <RenderResume
+            templateId={selectedTemplate?.theme || ""}
             resumeData={resumeData || DUMMY_RESUME_DATA}
             containerWidth={basewidth}
-            />
+          />
         </div>
       </div>
     </div>
