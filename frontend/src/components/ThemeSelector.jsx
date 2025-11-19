@@ -57,10 +57,12 @@ const ThemeSelector = ({
         <Tabs tabs={TAB_DATA} activeTab={tabValue} setActiveTab={setTabValue} />
 
         <button
-          className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r transition-all shadow-lg hover:shadow-xl"
+          className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-br from-fuchsia-500 via-purple-500 to-indigo-600 text-white rounded-2xl shadow-2xl transform transition duration-200 hover:scale-[1.02]"
           onClick={handleThemeSelection}
+          aria-label="Apply theme changes"
         >
-          <Check size={18} /> Apply Changes
+          <Check size={18} className="text-white" />
+          <span className="font-medium">Apply Changes</span>
         </button>
       </div>
 
