@@ -16,6 +16,8 @@ connectDB();
 
 //MIDDLEWARE
 app.use(express.json());
+// Serve uploaded images
+app.use("/uploads", express.static("uploads"));
 
 // Simple request logger to help debug missing routes
 app.use((req, res, next) => {

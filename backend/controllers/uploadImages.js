@@ -36,6 +36,7 @@ export const uploadResumeImages = async (req, res) => {
         const newProfileImage = req.files.profileImage?.[0];
 
         if (newThumbnail) {
+          // Remove old thumbnail if present
           if (resume.thumbnailLink) {
             const oldThumbnail = path.join(
               uploadsFolder,
@@ -44,8 +45,9 @@ export const uploadResumeImages = async (req, res) => {
             if (fs.existsSync(oldThumbnail)) {
               fs.unlinkSync(oldThumbnail);
             }
-            resume.thumbnailLink = `${baseUrl}/uploads/${newThumbnail.filename}`;
           }
+          // Always set new thumbnail link
+          resume.thumbnailLink = `${baseUrl}/uploads/${newThumbnail.filename}`;
         }
 
         //Same for profilepreview image

@@ -610,22 +610,23 @@ const EditResume = () => {
       const formData = new FormData();
       formData.append("thumbnail", thumbnailFile);
 
+      // Let the browser set the correct multipart boundary by NOT overriding Content-Type
       const uploadResponse = await axiosInstance.put(
         API_PATHS.RESUME.UPLOAD_IMAGES(resumeId),
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
+        formData
       );
 
-      const { thumbnailLink } = uploadResponse.data;
+      const { thumbnailLink } = uploadResponse.data || {};
       await updateResumeDetails(thumbnailLink);
 
       toast.success("Resume Updated Successfully");
       navigate("/dashboard");
     } catch (error) {
+      // If image upload fails, still persist resume data to avoid losing progress
       console.error("Error Uploading Images:", error);
-      toast.error("Failed to upload images");
+      await updateResumeDetails("");
+      toast.error("Thumbnail upload failed, but your progress was saved.");
+      navigate("/dashboard");
     } finally {
       setIsLoading(false);
     }
