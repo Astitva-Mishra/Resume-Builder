@@ -88,7 +88,16 @@ const ResumeSchema = new mongoose.Schema(
       },
     ],
 
-    interests: [String],
+  interests: [String],
+
+    // ATS evaluation results
+    ats: {
+      score: { type: Number, default: 0 },
+      matchedKeywords: [String],
+      missingKeywords: [String],
+      suggestions: [String],
+      lastEvaluatedAt: Date,
+    },
   },
 
   {

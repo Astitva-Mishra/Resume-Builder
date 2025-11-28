@@ -24,6 +24,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { API_PATHS } from "../utils/apiPaths";
+import { dataURLtoFile } from "../utils/helper";
 import toast from "react-hot-toast";
 import axiosInstance from "../utils/axiosInstance";
 import { fixTailwindColors } from "../utils/colors";
@@ -68,6 +69,7 @@ const EditResume = () => {
 
   const [openThemeSelector, setOpenThemeSelector] = useState(false);
   const [openPreviewModal, setOpenPreviewModal] = useState(false);
+  const [openATSModal, setOpenATSModal] = useState(false);
   const [currentPage, setCurrentPage] = useState("profile-info");
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,6 +77,9 @@ const EditResume = () => {
   const [downloadSuccess, setDownloadSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [completionPercentage, setCompletionPercentage] = useState(0);
+  const [atsScore, setAtsScore] = useState(0);
+  const [atsResult, setAtsResult] = useState({ matchedKeywords: [], missingKeywords: [], suggestions: [] });
+  const [jobDescription, setJobDescription] = useState("");
 
   const { width: previewWidth, ref: previewContainerRef } = useResizeObserver();
 
@@ -784,6 +789,13 @@ const EditResume = () => {
               <Download size={16} />
               <span className="text-sm">Preview</span>
             </button>
+
+            <button
+              onClick={() => setOpenATSModal(true)}
+              className={buttonStyles.theme}
+            >
+              <span className="text-sm">ATS Evaluate</span>
+            </button>
           </div>
         </div>
 
@@ -847,6 +859,12 @@ const EditResume = () => {
                   <div className={iconStyles.pulseDot}></div>
                   <span>Preview - {completionPercentage}% Complete</span>
                 </div>
+                {atsScore > 0 && (
+                  <div className={statusStyles.completionBadge}>
+                    <div className={iconStyles.pulseDot}></div>
+                    <span>ATS Score - {atsScore}%</span>
+                  </div>
+                )}
               </div>
 
               <div
@@ -925,6 +943,81 @@ const EditResume = () => {
               </div>
             </div>
           </div>
+        </div>
+      </Modal>
+
+      {/* ATS Modal */}
+      <Modal
+        isOpen={openATSModal}
+        onClose={() => setOpenATSModal(false)}
+        title="ATS Evaluator"
+        showActionBtn
+        actionBtnText="Evaluate"
+        onActionClick={async () => {
+          try {
+            const resp = await axiosInstance.post(
+              API_PATHS.RESUME.EVALUATE_ATS(resumeId),
+              { jobDescription, resumeOverride: resumeData }
+            );
+            const { score, matchedKeywords = [], missingKeywords = [], suggestions = [] } = resp.data;
+            setAtsScore(score || 0);
+            setAtsResult({ matchedKeywords, missingKeywords, suggestions });
+            toast.success(`ATS score calculated: ${score}%`);
+          } catch (err) {
+            console.error('ATS evaluation failed:', err);
+            toast.error('Failed to evaluate ATS score');
+          }
+        }}
+      >
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">Paste Job Description</label>
+            <textarea
+              className="w-full border rounded-xl p-3 text-sm"
+              rows={6}
+              placeholder="Paste the role description or JD to evaluate keyword match"
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)}
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h4 className="text-sm font-semibold mb-2">Matched Keywords</h4>
+              <div className="flex flex-wrap gap-2">
+                {atsResult.matchedKeywords.length === 0 && (
+                  <span className="text-xs text-gray-500">None yet</span>
+                )}
+                {atsResult.matchedKeywords.map((k, i) => (
+                  <span key={i} className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">{k}</span>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h4 className="text-sm font-semibold mb-2">Missing Keywords</h4>
+              <div className="flex flex-wrap gap-2">
+                {atsResult.missingKeywords.length === 0 && (
+                  <span className="text-xs text-gray-500">None</span>
+                )}
+                {atsResult.missingKeywords.map((k, i) => (
+                  <span key={i} className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded-full">{k}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div>
+            <h4 className="text-sm font-semibold mb-2">Suggestions to Improve</h4>
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              {atsResult.suggestions.length === 0 && (
+                <li className="text-gray-500">No suggestions — looks good!</li>
+              )}
+              {atsResult.suggestions.map((s, i) => (
+                <li key={i}>{s}</li>
+              ))}
+            </ul>
+          </div>
+          {atsScore > 0 && (
+            <div className="text-sm">Current ATS Score: <span className="font-semibold">{atsScore}%</span></div>
+          )}
         </div>
       </Modal>
 
