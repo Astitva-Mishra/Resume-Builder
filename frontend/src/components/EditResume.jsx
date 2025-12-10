@@ -953,6 +953,7 @@ const EditResume = () => {
         title="ATS Evaluator"
         showActionBtn
         actionBtnText="Evaluate"
+        containerClassName="w-[92vw] max-w-5xl"
         onActionClick={async () => {
           try {
             const resp = await axiosInstance.post(
@@ -969,18 +970,18 @@ const EditResume = () => {
           }
         }}
       >
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div>
             <label className="block text-sm font-medium mb-1">Paste Job Description</label>
             <textarea
               className="w-full border rounded-xl p-3 text-sm"
-              rows={6}
+              rows={10}
               placeholder="Paste the role description or JD to evaluate keyword match"
               value={jobDescription}
               onChange={(e) => setJobDescription(e.target.value)}
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h4 className="text-sm font-semibold mb-2">Matched Keywords</h4>
               <div className="flex flex-wrap gap-2">

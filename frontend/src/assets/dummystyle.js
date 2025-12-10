@@ -544,7 +544,7 @@ export const modalStyles = {
     "flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-bold rounded-xl hover:scale-105 transition-all shadow-lg mr-12",
   closeButton:
     "absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-white/80 hover:bg-red-50 text-slate-400 hover:text-red-500 rounded-xl transition-all shadow-lg hover:scale-110 z-10",
-  body: "flex-1 overflow-y-auto",
+  body: "flex-1 overflow-y-auto p-6",
 };
 
 export const infoStyles = {

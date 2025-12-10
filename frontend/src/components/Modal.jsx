@@ -3,13 +3,13 @@ import { modalStyles as styles } from '../assets/dummystyle'
 import {X} from 'lucide-react'
 
 const Modal = ({
-    children, isOpen, onClose, title, hideHeader, showActionBtn, actionBtnIcon = null, actionBtnText, onActionClick = () =>{},
+    children, isOpen, onClose, title, hideHeader, showActionBtn, actionBtnIcon = null, actionBtnText, onActionClick = () =>{}, containerClassName = '',
 }) => {
     if (!isOpen) return null
     
   return (
     <div className={styles.overlay}>
-        <div className={styles.container}>
+        <div className={`${styles.container} ${containerClassName}`}>
             {!hideHeader && (
                 <div className={styles.header}>
                     <h3 className={styles.title}>
